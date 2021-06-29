@@ -2,6 +2,7 @@ package golang_goroutines
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -57,7 +58,7 @@ func TestInOutChannel(t *testing.T) {
 	defer close(channel)
 }
 
-func TestBefferedChannel(t *testing.T) {
+func TestBufferedChannel(t *testing.T) {
 	channel := make(chan string, 3)
 	defer close(channel)
 
@@ -74,5 +75,22 @@ func TestBefferedChannel(t *testing.T) {
 	}()
 
 	time.Sleep(2 * time.Second)
+	fmt.Println("Selesai")
+}
+
+func TestRangeChannel(t *testing.T) {
+	channel := make(chan string)
+
+	go func() {
+		for i := 0; i < 10; i++ {
+			channel <- "Perulangan ke " + strconv.Itoa(i)
+		}
+		close(channel)
+	}()
+
+	for data := range channel {
+		fmt.Println("Menerima data", data)
+	}
+
 	fmt.Println("Selesai")
 }
